@@ -14,7 +14,7 @@ app.get("/", (req, res) => {
     
 app.post("/", (req, res) => {
 
-        user.add({firstName: "Steve", lastName: "Irwin", password: "BobbyTables"}, (err, data) => {
+        user.add({firstName: "Steve", lastName: "Irwin", Password: "test"}, (err, data) => {
             if (err) throw err;
             res.send(data);
         });
