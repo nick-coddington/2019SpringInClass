@@ -6,7 +6,7 @@ const app = express.Router();
 app.get("/", (req, res) => {
 
     user.getAll((err, data) => {
-        if(err) throw err;
+        if (err) throw err;
         res.send(data);
     })
 
@@ -15,7 +15,7 @@ app.get("/", (req, res) => {
 app.post("/", (req, res) => {
 
         user.add({firstName: "Steve", lastName: "Irwin", password: "BobbyTables"}, (err, data) => {
-            if(err) throw err;
+            if (err) throw err;
             res.send(data);
         });
     
