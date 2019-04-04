@@ -6,16 +6,23 @@ const model = {
             cb(err, data);
         });    
     },
-    get(id, cb){
-        conn.query("SELECT * FROM 2019Spring_Persons WHERE Id=?", id,(err, data) => {
-            cb(err, data[0]);
-        });    
+    async get(id){
+        const data = await conn.query("SELECT * FROM 2019Spring_Persons WHERE Id=?", id);
+        if(!data){
+            throw Error("User not found");
+        }
+        return data[0];
     },
     add(input, cb){
+        if(!input.Password){
+            cb(Error('A Password is Required'));
+            return;
+        }
         if(input.Password.length < 8){
             cb(Error('A longer Password is Required'));
             return;
         }
+
         conn.query("INSERT INTO 2019Spring_Persons (firstName,lastName,birthday,Password,created_at) VALUES(?)", 
                 [[input.firstName, input.lastName, input.birthday, input.Password, new Date()]],
                 (err, data) => {

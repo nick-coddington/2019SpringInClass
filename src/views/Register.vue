@@ -47,19 +47,37 @@
       </div>
     </div>
     </div>
+    <div class="col-lg-6">
+      <div class="card border-sucess" v-if="newUser">
+        <div class="card-body">
+          <h4 class="card-title"> Congrats! You've Registered!</h4>
+          <p class="card-text">
+            {{newUser.firstName}} {{newUser.lastName}}
+          </p>
+        </div>
+      </div>
+    </div>
 </div>
     
 </template>
 
 <script>
 import { Register } from "@/models/users";
+import { Globals } from "@/models/api";
+
 export default {
     data: () => ({
-        data: {}
+        data: {},
+        newUser: null
     }),
     methods:{
-        submit() {
-            
+        async submit() {
+           try {
+             const m = await Register(this.data);
+             this.newUser = m;             
+           } catch (error) {
+             Globals.errors.push(error);             
+           }
         }
     }
 }
