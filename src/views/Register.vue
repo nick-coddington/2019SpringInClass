@@ -17,18 +17,18 @@
       </div>
       <div class="card-body">
         <h4 class="card-title">Register</h4>
-        <p class="card-text">
+        <div class="card-text">
             <form @submit.prevent="submit">
                 <div class="form-group">
-                  <label for="FirstName">First Name</label>
-                  <input type="text" v-model="data.FirstName"
-                    class="form-control" name="FirstName" id="FirstName" aria-describedby="helpFirstName" placeholder="First Name">
+                  <label for="firstName">First Name</label>
+                  <input type="text" v-model="data.firstName"
+                    class="form-control" name="firstName" id="firstName" aria-describedby="helpFirstName" placeholder="First Name">
                   <small id="helpFirstName" class="form-text text-muted">If you have a middle you can add it here.</small>
                 </div>
                 <div class="form-group">
-                  <label for="LastName">Last Name</label>
-                  <input type="text" v-model="data.LastName"
-                    class="form-control" name="LastName" id="LastName" aria-describedby="helpLastName" placeholder="Last Name">
+                  <label for="lastName">Last Name</label>
+                  <input type="text" v-model="data.lastName"
+                    class="form-control" name="lastName" id="lastName" aria-describedby="helpLastName" placeholder="Last Name">
                   <small id="helpLastName" class="form-text text-muted">Sir Name</small>
                 </div>
                 <div class="form-group">
@@ -38,12 +38,12 @@
                 <div class="form-group">
                   <label for="Birthdaay">Birthday</label>
                   <input type="date" v-model="data.Birthday"
-                    class="form-control" name="Birthdaay" id="Birthdaay" aria-describedby="helpBirthday" placeholder="Your Birthday">
+                    class="form-control" name="Birthdaay" id="Birthday" aria-describedby="helpBirthday" placeholder="Your Birthday">
                   <small id="helpBirthday" class="form-text text-muted">Please include the year</small>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
-        </p>
+        </div>
       </div>
     </div>
     </div>
@@ -64,6 +64,8 @@
 <script>
 import { Register } from "@/models/users";
 import { Globals } from "@/models/api";
+import toastr from 'toastr';
+import 'toastr/build/toastr.css'
 
 export default {
     data: () => ({
@@ -74,9 +76,11 @@ export default {
         async submit() {
            try {
              const m = await Register(this.data);
-             this.newUser = m;             
+             this.newUser = m;
+             toastr.success("You've registered successfully!")         
            } catch (error) {
-             Globals.errors.push(error);             
+             Globals.errors.push(error);
+             toastr.error(error.msg);             
            }
         }
     }

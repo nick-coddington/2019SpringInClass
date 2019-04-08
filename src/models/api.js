@@ -19,7 +19,7 @@ export async function api(url, data) {
     if(!data){
       response = await fetch(API_ROUTE + url);  
     } else {
-        response = await fetch(url, {
+        response = await fetch(API_ROUTE + url, {
             method: "POST", // *GET, POST, PUT, DELETE, etc.
             cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
             headers: {
