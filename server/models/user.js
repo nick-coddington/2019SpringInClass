@@ -20,14 +20,14 @@ const model = {
     },
 
     async add(input){
-        if(!input.Password){
+        if(!input.password){
             cb(Error('A Password is Required'));
             return;
         }
-        if(input.Password.length < 8){
+        if(input.password.length < 8){
             throw Error('A longer Password is Required');
         }
-        const hashedPassword = await bcrypt.hash(input.Password, SALT_ROUNDS)
+        const hashedPassword = await bcrypt.hash(input.password, SALT_ROUNDS)
         const data = await conn.query(
             "INSERT INTO 2019Sring_Persons (firstName, lastName, birthday, password, created_at) VALUES (?)",
             [[input.firstName, input.lastName, input.birthday, hashedPassword, new Date()]]
@@ -35,51 +35,32 @@ const model = {
         return await model.get(data.insertId);
     },
 
-    login(email, password, cb){
-        conn.query(`SELECT * FROM 2019Spring_Persons P Join 2019Spring_ContactMethods CM on CM.Person_Id = P.id
-        WHERE CM.value=?`, email, (err,data) => {
-            if(err) return cb(err);
-            if (data.length==0){
-                return cb('User not found')
-            }else{
-                bcrypt.compare(password,data[0].password).then(x => {
-                    if(x){
-                        return cb(null,data[0]);
-                    }else{
-                        return cb('Wrong Password');
-                    }
-                });
-            }
-        });
+    async login(email, password){
+        const data = await conn.query(`SELECT * FROM 2019Spring_Persons P Join 2019Spring_ContactMethods CM on CM.Person_Id = P.id
+        WHERE CM.value=?`, email);
+        if(data.length ==0) {
+            throw Error('User Not Found');
+        }
+        const x = await bcrypt.compare(password, data[0].password);
+        if(x) {
+            return data[0];
+        }else {
+            throw Error('Wrong Password')
+        }
     },
-    changePassword(email, oldPassword, newPassword, cb){
-        conn.query(`SELECT * FROM 2019Spring_Persons P Join 2019Spring_ContactMethods CM on CM.Person_Id = P.id
-        WHERE CM.value=?`, email, (err,data) => {
-            if(err) return cb(err);
-            if(data.length == 0){
-                return cb('User not found')
-            }else{
-                function changeIt(){
-                    bcrypt.hash(newPassword, SALT_ROUNDS).then( x => {
-                        conn.query(`UPDATE 2019Spring_Persons P set ? WHERE P.id=?`, [{password: x},data[0].id], (err,data) => {
-                            if(err) return cb(err);
-                            return cb(null,"Password Successfully Changed");
-                        })
-                    })
-                }
-            if(data[0].password=""){
-                return changeIt();
-            }else{
-                bcrypt.compare(oldPassword, data[0].password).then( x=> {
-                        if(x){
-                            return changeIt();
-                        }else{
-                            return cb('Wrong Password')
-                        }
-                    });
-                }    
-            }
-        });
+    async changePassword(email, oldPassword, newPassword) {
+        const data = await conn.query(`SELECT * FROM 2019Spring_Persons P Join 2019Spring_ContactMethods CM on CM.Person_Id = P.id
+        WHERE CM.value=?`, email);
+        if (data.length == 0) {
+            throw Error('User Not Found')
+        }
+        if (data[0].password == " " || await bcrypt.compare(oldPassword, data[0].password)) {
+            const hashedPassword = await bcrypt.hash(newPassword, SALT_ROUNDS);
+            await conn.query(`UPDATE 2019Spinrg_Persons P SET ? WHERE P.id=?`, [ {Password: hashedPassword}, data[0].id]);
+            return {status: "success", msg: "Password Successfully Changed" };
+        }else {
+            throw Error('Wrong Password');
+        }
     }
 };
 
