@@ -8,7 +8,7 @@ const port  = 3000;
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Auhorization");
     next();
 });
 app.use(function(req, res, next) {
@@ -16,7 +16,8 @@ app.use(function(req, res, next) {
       const token = (req.headers.authorization || "").split(' ')[1]
       req.user = userModel.getFromToken(token);
     } catch (error) {
-      if(false){ //check if login required
+      const openActions = ['POST/users', 'POST/users/login']
+      if(req.method != "OPTIONS" && !openActions.includes(req.method + req.path)){ //check if login is required
         next(Error("Login Requred"));
       }
     }

@@ -65,7 +65,6 @@
 import { Register } from "@/models/users";
 import { Globals } from "@/models/api";
 import toastr from 'toastr';
-import 'toastr/build/toastr.css'
 
 export default {
     data: () => ({
