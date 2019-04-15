@@ -63,7 +63,7 @@ export default {
         async submit() {
            try {
              const m = await Login(this.data);
-             this.newUser = m.user;
+             this.$router.push(Globals.redirectRoute)
              toastr.success("You've logged in successfully!")         
            } catch (error) {
              Globals.errors.push(error);
