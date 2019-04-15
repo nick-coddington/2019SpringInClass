@@ -45,7 +45,7 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   const publicRoutes = ['home', 'login', 'register'];
   if(!publicRoutes.includes(to.name) && !Globals.user) {
-    next('login');
+    return next('login');
   }
   next();
 })

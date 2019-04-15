@@ -21,8 +21,7 @@ const model = {
 
     async add(input){
         if(!input.password){
-            cb(Error('A Password is Required'));
-            return;
+            throw (Error('A Password is Required'));
         }
         if(input.password.length < 8){
             throw Error('A longer Password is Required');

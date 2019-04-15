@@ -33,7 +33,7 @@
                 </div>
                 <div class="form-group">
                   <label for="Password">Password</label>
-                  <input type="password" class="form-control" v-model="data.Password" name="Password" id="Password" placeholder="Password">
+                  <input type="password" class="form-control" v-model="data.password" name="Password" id="Password" placeholder="Password">
                 </div>
                 <div class="form-group">
                   <label for="Birthdaay">Birthday</label>
