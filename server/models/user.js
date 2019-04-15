@@ -57,7 +57,7 @@ const model = {
         if (data[0].password == " " || await bcrypt.compare(oldPassword, data[0].password)) {
             const hashedPassword = await bcrypt.hash(newPassword, SALT_ROUNDS);
             await conn.query(`UPDATE 2019Spinrg_Persons P SET ? WHERE P.id=?`, [ {Password: hashedPassword}, data[0].id]);
-            return {status: "success", msg: "Password Successfully Changed" };
+            return {status: "success", message: "Password Successfully Changed" };
         }else {
             throw Error('Wrong Password');
         }
