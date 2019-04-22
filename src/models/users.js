@@ -19,3 +19,11 @@ export async function Login(data) {
     Globals.token = x.token;
     return x;
 }
+
+export async function oAuthLogin(token, fbid) {
+    const x = await api("users/facebookLogin", {token, fbid})
+    Globals.user = x.user;
+    Globals.token = x.token;
+    Globals.oAuthId = fbid;
+    return x;
+}
