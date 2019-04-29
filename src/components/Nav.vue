@@ -21,12 +21,11 @@
                 <router-link class="nav-link disabled" to="#" active-class="active">Disabled</router-link>
             </li>
         </ul>
-            <form class="form-inline mt-2 mt-md-0" v-if="!user">
+            <form class="form-inline mt-2 mt-md-0" v-if="!Globals.user">
                 <router-link to="/Login" class="nav-link">Login</router-link>
                 <router-link to="/Register" class="nav-link">Sign Up</router-link>
             </form>                
             <span class="navbar-text" v-if="Globals.user">
-                <img :src="`https://graph/facebook.com/${Globals.oAuthId}/picture`">
                 Welcome {{Globals.user.firstName}}</span>
         </div>
     </nav>
